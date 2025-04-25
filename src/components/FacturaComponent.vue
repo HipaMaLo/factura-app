@@ -1,4 +1,5 @@
 <template>
+  
   <div class="container-maestro">
     <FacturaMaestro
       v-on:addProducto="addProducto"
@@ -12,6 +13,15 @@
       v-bind:productos="productos"
     />
   </div>
+
+  <div class="container-total">
+    
+    <h2>Subtotal: {{ formatCurrency(subTotal) }}</h2>
+    <h2>IVA: {{ formatCurrency(Iva) }}</h2>
+    <h2>Total: {{ formatCurrency(total) }}</h2>
+        
+  </div>
+
 </template>
 
 <script lang="ts" setup>
@@ -19,6 +29,7 @@ import { ref, Ref, computed } from 'vue'
 import type { IProducto } from '../types/IProducto'
 import FacturaMaestro from './FacturaMaestro.vue'
 import FacturaDetalle from './FacturaDetalle.vue'
+import { formatCurrency } from '../utilities/formatCurrency'
 
 const productos: Ref<IProducto[]> = ref([])
 
@@ -52,3 +63,16 @@ const Iva = computed(() => subTotal.value * 0.15)
 const total = computed(() => subTotal.value + Iva.value)
 
 </script>
+
+<style scoped >
+
+.container-total {
+    font-size: 12px;
+    font-weight: bold;
+    text-align: right;
+    color: #333;
+    margin-top: 20px;
+    width: 100%;
+    max-width: 700px;
+}
+</style>
