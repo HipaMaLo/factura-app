@@ -1,5 +1,4 @@
 <template>
-  
   <div class="container-maestro">
     <FacturaMaestro
       v-on:addProducto="addProducto"
@@ -14,7 +13,7 @@
     />
   </div>
 
-  <div class="container-total">
+ <div class="container-total">
     
     <h2>Subtotal: {{ formatCurrency(subTotal) }}</h2>
     <h2>IVA: {{ formatCurrency(Iva) }}</h2>
@@ -65,7 +64,6 @@ const total = computed(() => subTotal.value + Iva.value)
 </script>
 
 <style scoped >
-
 .container-total {
     font-size: 12px;
     font-weight: bold;
@@ -76,3 +74,4 @@ const total = computed(() => subTotal.value + Iva.value)
     max-width: 700px;
 }
 </style>
+
