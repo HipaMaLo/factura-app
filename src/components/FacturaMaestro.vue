@@ -44,6 +44,7 @@ watch(() => props.productoEditar, (nuevo) => {
 })
 
 const handleAgregar = () => {
+
   if (producto.value.nombre && producto.value.precio > 0 && producto.value.cantidad > 0) {
     producto.value.totalitem = producto.value.precio * producto.value.cantidad
 
