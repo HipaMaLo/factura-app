@@ -1,14 +1,14 @@
 <template>
   <div class="form-group-detalle">
-    <h1>Detalle de la Factura</h1>
+    <h2>PRODUCTS</h2>
     <table>
       <thead>
         <tr>
-          <th>Producto</th>
-          <th>Precio</th>
-          <th>Cantidad</th>
+          <th>Product</th>
+          <th>Price</th>
+          <th>Quantity</th>
           <th>Total</th>
-          <th>Acciones</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
@@ -18,8 +18,8 @@
           <td>{{ item.cantidad }}</td>
           <td>{{ formatCurrency(item.totalitem) }}</td>
           <td class="actions">
-            <button @click="handleEdit(index)" class="edit-btn">✏️</button>
-            <button @click="handleDelete(index)" class="delete-btn">🗑️</button>
+            <button @click="handleEdit(index)" class="edit-btn">✏️ Editar</button>
+            <button @click="handleDelete(index)" class="delete-btn">🗑️ Eliminar</button>
           </td>
         </tr>
       </tbody>
@@ -36,7 +36,7 @@ const emit = defineEmits(["editProducto", "deleteProducto", "update:visibleRow"]
 
 const props = defineProps({
   visibleRow: {
-    type: Number, // <-- ahora es un número (índice) o null
+    type: Number,
     default: null
   },
   productos: {
@@ -45,7 +45,6 @@ const props = defineProps({
   }
 })
 
-// Visibilidad local sincronizada con el prop
 const visible = ref(props.visibleRow)
 
 watch(() => props.visibleRow, (nuevo) => {
@@ -64,74 +63,52 @@ const handleDelete = (index: number) => {
 
 <style scoped>
 
-.form-group-detalle h1 {
-    text-align: left;
-    color: #333;
-}
 
-.form-group-footer {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-}
-
-
-.form-group-detalle {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 1000px;
+h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
 table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 10px;
+  width: 100%;
+  border-collapse: collapse;
 }
 
 th, td {
-    padding: 10px;
-    text-align: left;
-    border-bottom: 1px solid #ddd;
+  padding: 12px;
+  border-bottom: 1px solid #ddd;
 }
 
 th {
-    background-color: #f2f2f2;
+  background-color: #f9f9f9;
+  text-align: left;
 }
 
 .actions {
-    display: flex;
-    gap: 10px;
+  display: flex;
+  gap: 10px;
 }
 
 .edit-btn, .delete-btn {
-    border: none;
-    background: none;
-    
-    cursor: pointer;
-    font-size: 12px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  font-weight: bold;
+}
+
+.edit-btn {
+  color: #007bff;
 }
 
 .edit-btn:hover {
-    color: #007bff;
+  text-decoration: underline;
 }
+
+.delete-btn {
+  color: #dc3545;
+}
+
 .delete-btn:hover {
-    color: #dc3545;
+  text-decoration: underline;
 }
-
-.form-group-footer {
-    font-size: 18px;
-    font-weight: bold;
-    text-align: right;
-    color: #333;
-    margin-top: 20px;
-    width: 100%;
-    max-width: 700px;
-}
-
-
 </style>
