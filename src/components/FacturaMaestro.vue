@@ -1,29 +1,24 @@
 <template>
+  <div class="form-group">
+    <h2>MARKET PLACE</h2>
 
-<div class="form-group">
+    <label>Product</label>
+    <input type="text" v-model="producto.nombre" placeholder="Nombre del producto" v-focus />
 
-<h1>Factura Maestro</h1>
+    <label>Price</label>
+    <input type="number" v-model="producto.precio" placeholder="Precio" min="0" />
 
-<label  for="">Producto</label>
-<input type="text" v-model="producto.nombre" placeholder="Producto" v-focus />
+    <label>Quantity</label>
+    <input type="number" v-model="producto.cantidad" placeholder="Cantidad" min="0" />
 
-<label for="">Precio</label>
-<input type="text" v-model="producto.precio" placeholder="Precio" />
-
-<label for="">Cantidad</label>  
-<input  type="text" v-model="producto.cantidad" placeholder="Cantidad" />
-
-<button v-on:click="handleAgregar">Agregar</button>
-
-</div>
-
+    <button @click="handleAgregar">Add Product</button>
+  </div>
 </template>
 
 <script lang="ts" setup>
 import { ref, defineEmits, defineProps, watch } from 'vue'
 import type { IProducto } from '../types/IProducto'
 
-// Props y Emits
 const props = defineProps({
   productoEditar: {
     type: Object as () => IProducto | null,
@@ -31,9 +26,8 @@ const props = defineProps({
   }
 })
 
-const emit = defineEmits(['addProducto', 'update:productoEditar'])
+const emit = defineEmits(['addProducto', 'productoEditar'])
 
-// Producto local
 const producto = ref<IProducto>({
   nombre: '',
   precio: 0,
@@ -41,94 +35,65 @@ const producto = ref<IProducto>({
   totalitem: 0,
 })
 
-// Si recibimos un productoEditar, copiamos sus valores
 watch(() => props.productoEditar, (nuevo) => {
-  if (nuevo) {
-    producto.value = { ...nuevo }
-  } else {
-    // Si es null, limpiamos el formulario
-    limpiarFormulario()
-  }
+  if (nuevo) producto.value = { ...nuevo }
+  else limpiarFormulario()
 })
 
-// Función para agregar o editar producto
 const handleAgregar = () => {
   if (producto.value.nombre && producto.value.precio > 0 && producto.value.cantidad > 0) {
     producto.value.totalitem = producto.value.precio * producto.value.cantidad
-
     emit('addProducto', { ...producto.value })
-
-    // Luego de agregar o editar, reseteamos productoEditar
-    emit('update:productoEditar', null)
-
-    // Limpiamos el formulario visualmente
+    emit('productoEditar', null)
     limpiarFormulario()
   } else {
-    alert('Por favor, completa todos los campos correctamente.')
+    alert('Por favor completa todos los campos correctamente.')
   }
 }
 
-// Limpiar el formulario
 const limpiarFormulario = () => {
-  producto.value = {
-    nombre: '',
-    precio: 0,
-    cantidad: 0,
-    totalitem: 0
-  }
+  producto.value = { nombre: '', precio: 0, cantidad: 0, totalitem: 0 }
 }
 </script>
 
-
-
 <style scoped>
-
-.form-group h1{
-    text-align: left;
-    color: #333;
-}
-
 .form-group {
-    background: #fff;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    margin-bottom: 20px;
-    display: flex;
-    flex-direction: column;
+  background: #ffffff;
+  padding: 25px;
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
 }
 
-.form-group {
-    width: 100%;
-    max-width: 300px;
+.form-group h2 {
+  margin-bottom: 20px;
+  color: #333;
 }
 
-.form-group label {
-    display: block;
-    margin-bottom: 5px;
-    font-weight: bold;
+label {
+  margin-top: 10px;
+  margin-bottom: 5px;
+  font-weight: bold;
 }
 
-.form-group input {
-    width: calc(100% - 20px);
-    padding: 10px;
-    margin-bottom: 15px;
-    border: 1px solid #ccc;
-    border-radius: 4px;
-    display: flex;
+input {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  margin-bottom: 15px;
 }
 
 button {
-    background-color: #28a745;
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 4px;
-    cursor: pointer;
+  background-color: #28a745;
+  color: white;
+  padding: 12px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
 }
 
 button:hover {
-    background-color: #218838;
+  background-color: #218838;
 }
-
 </style>
