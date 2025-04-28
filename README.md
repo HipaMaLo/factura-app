@@ -12,12 +12,11 @@ Proyecto hecho en Vue 3.
 
 ## Descripción
 
-Factura App es una aplicación desarrollada en Vue 3 que tiene como objetivo facilitar la gestión de facturas. Este proyecto es ideal para pequeñas empresas o individuos que buscan una solución simple y eficiente para administrar sus facturas.
+Factura App es una demo desarrollada en Vue 3 que tiene como objetivo practicar los conceptos básicos de Vue 3.
 
 ## Características
 
 - Interfaz moderna y fácil de usar.
-- Gestión de facturas de manera eficiente.
 - Construido con tecnologías modernas como Vue 3.
 
 ## Tecnologías Utilizadas
