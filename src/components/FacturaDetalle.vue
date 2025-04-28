@@ -1,4 +1,3 @@
-// Componente: DetalleFactura.vue
 <template>
   <div class="form-group-detalle">
     <h1>Detalle de la Factura</h1>
@@ -9,10 +8,11 @@
           <th>Precio</th>
           <th>Cantidad</th>
           <th>Total</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody>
-        <tr v-for="(item, index) in productos" :key="index">
+        <tr v-for="(item, index) in productos" :key="index" v-show="visibleRow !== index">
           <td>{{ item.nombre }}</td>
           <td>{{ formatCurrency(item.precio) }}</td>
           <td>{{ item.cantidad }}</td>
@@ -27,23 +27,39 @@
   </div>
 </template>
 
-<script setup lang="ts">    
-import { defineProps, defineEmits } from 'vue'
+<script setup lang="ts">
+import { ref, watch, defineEmits, defineProps } from 'vue'
 import type { IProducto } from '../types/IProducto'
 import { formatCurrency } from '../utilities/formatCurrency'
 
-const emit = defineEmits(["editProducto", "deleteProducto"])
+const emit = defineEmits(["editProducto", "deleteProducto", "update:visibleRow"])
 
-defineProps<{ productos: IProducto[] }>();
+const props = defineProps({
+  visibleRow: {
+    type: Number, // <-- ahora es un número (índice) o null
+    default: null
+  },
+  productos: {
+    type: Array as () => IProducto[],
+    default: () => []
+  }
+})
+
+// Visibilidad local sincronizada con el prop
+const visible = ref(props.visibleRow)
+
+watch(() => props.visibleRow, (nuevo) => {
+  visible.value = nuevo
+})
 
 const handleEdit = (index: number) => {
   emit('editProducto', index)
+  emit('update:visibleRow', index)
 }
 
 const handleDelete = (index: number) => {
   emit('deleteProducto', index)
 }
-
 </script>
 
 <style scoped>
