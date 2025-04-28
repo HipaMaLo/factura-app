@@ -20,48 +20,65 @@
 </template>
 
 <script lang="ts" setup>
-import { defineEmits, ref, Ref, watch, defineProps } from 'vue'
+import { ref, defineEmits, defineProps, watch } from 'vue'
 import type { IProducto } from '../types/IProducto'
 
-const emit = defineEmits(['addProducto'])
+// Props y Emits
+const props = defineProps({
+  productoEditar: {
+    type: Object as () => IProducto | null,
+    default: null
+  }
+})
 
-const props = defineProps<{
-  productoEditar: IProducto | null
-}>()
+const emit = defineEmits(['addProducto', 'update:productoEditar'])
 
-let producto: Ref<IProducto> = ref({
+// Producto local
+const producto = ref<IProducto>({
   nombre: '',
   precio: 0,
   cantidad: 0,
   totalitem: 0,
 })
 
-// Si viene un producto para editar, lo ponemos en el formulario
+// Si recibimos un productoEditar, copiamos sus valores
 watch(() => props.productoEditar, (nuevo) => {
   if (nuevo) {
     producto.value = { ...nuevo }
+  } else {
+    // Si es null, limpiamos el formulario
+    limpiarFormulario()
   }
 })
 
+// Función para agregar o editar producto
 const handleAgregar = () => {
-
   if (producto.value.nombre && producto.value.precio > 0 && producto.value.cantidad > 0) {
     producto.value.totalitem = producto.value.precio * producto.value.cantidad
 
     emit('addProducto', { ...producto.value })
 
-    // Limpiar formulario
-    Object.assign(producto.value, {
-      nombre: '',
-      precio: 0,
-      cantidad: 0,
-      totalitem: 0
-    })
+    // Luego de agregar o editar, reseteamos productoEditar
+    emit('update:productoEditar', null)
+
+    // Limpiamos el formulario visualmente
+    limpiarFormulario()
   } else {
     alert('Por favor, completa todos los campos correctamente.')
   }
 }
+
+// Limpiar el formulario
+const limpiarFormulario = () => {
+  producto.value = {
+    nombre: '',
+    precio: 0,
+    cantidad: 0,
+    totalitem: 0
+  }
+}
 </script>
+
 
 
 <style scoped>
