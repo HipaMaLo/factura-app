@@ -1,5 +1,6 @@
 <template>
   <div class="factura-wrapper">
+    
     <!-- Maestro a la Izquierda -->
     <div class="container-maestro">
       <FacturaMaestro
@@ -59,10 +60,7 @@ const productos = ref<IProducto[]>([
     totalitem: 120,
   },
 
-
-
 ])
-
 
 const addProducto = (producto: IProducto) => {
   if (productoEditando.value) {
@@ -86,6 +84,8 @@ const deleteProducto = (index: number) => {
 const subTotal = computed(() => productos.value.reduce((acc, item) => acc + item.totalitem, 0))
 const Iva = computed(() => subTotal.value * 0.15)
 const total = computed(() => subTotal.value + Iva.value)
+
+
 </script>
 
 <style scoped>

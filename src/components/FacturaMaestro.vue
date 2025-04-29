@@ -9,49 +9,55 @@
     <input type="number" v-model="producto.precio" placeholder="Precio" min="0" />
 
     <label>Quantity</label>
-    <input type="number" v-model="producto.cantidad" placeholder="Cantidad" min="0" />
+    <input type="number" v-model="producto.cantidad" placeholder="Cantidad" min="0"  value="12" />
 
     <button @click="handleAgregar">Add Product</button>
+
   </div>
 </template>
 
 <script lang="ts" setup>
-import { ref, defineEmits, defineProps, watch } from 'vue'
+import { ref, defineEmits, defineProps, watch, Ref } from 'vue'
 import type { IProducto } from '../types/IProducto'
+
+const producto:Ref<IProducto> = ref({
+  nombre: 'Naranja',
+  precio: 1.15,
+  cantidad: 23,
+  totalitem: 0,
+})
 
 const props = defineProps({
   productoEditar: {
-    type: Object as () => IProducto | null,
+    type: Array as () => IProducto | null,
     default: null
   }
 })
 
-const emit = defineEmits(['addProducto', 'productoEditar'])
-
-const producto = ref<IProducto>({
-  nombre: '',
-  precio: 0,
-  cantidad: 0,
-  totalitem: 0,
-})
+const emit = defineEmits(['addProducto', 'update:productoEditar'])
 
 watch(() => props.productoEditar, (nuevo) => {
   if (nuevo) producto.value = { ...nuevo }
-  else limpiarFormulario()
+  else cleanForm()
 })
 
 const handleAgregar = () => {
   if (producto.value.nombre && producto.value.precio > 0 && producto.value.cantidad > 0) {
-    producto.value.totalitem = producto.value.precio * producto.value.cantidad
-    emit('addProducto', { ...producto.value })
-    emit('productoEditar', null)
-    limpiarFormulario()
+    
+    producto.value.totalitem = producto.value.precio * producto.value.cantidad;
+    
+    emit('addProducto', { ...producto.value });
+    
+    emit('update:productoEditar', null);
+  
+    cleanForm();
+
   } else {
     alert('Por favor completa todos los campos correctamente.')
   }
 }
 
-const limpiarFormulario = () => {
+const cleanForm = () => {
   producto.value = { nombre: '', precio: 0, cantidad: 0, totalitem: 0 }
 }
 </script>
