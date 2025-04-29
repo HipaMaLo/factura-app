@@ -18,8 +18,8 @@
           <td>{{ item.cantidad }}</td>
           <td>{{ formatCurrency(item.totalitem) }}</td>
           <td class="actions">
-            <button @click="handleEdit(index)" class="edit-btn">✏️ Editar</button>
-            <button @click="handleDelete(index)" class="delete-btn">🗑️ Eliminar</button>
+            <button @click="handleEdit(index)" class="edit-btn">✏️ Edit</button>
+            <button @click="handleDelete(index)" class="delete-btn">❌ Delete</button>
           </td>
         </tr>
       </tbody>
@@ -32,17 +32,20 @@ import { ref, watch, defineEmits, defineProps } from 'vue'
 import type { IProducto } from '../types/IProducto'
 import { formatCurrency } from '../utilities/formatCurrency'
 
-const emit = defineEmits(["editProducto", "deleteProducto", "update:visibleRow"])
+const emit = defineEmits(["editProducto", "deleteProducto", "update:visibleRow", "update:productos"])
 
 const props = defineProps({
+
   visibleRow: {
     type: Number,
     default: null
   },
+
   productos: {
     type: Array as () => IProducto[],
     default: () => []
   }
+  
 })
 
 const visible = ref(props.visibleRow)
